@@ -1,0 +1,17 @@
+@model Queue_Management_System.Models.CheckinModel
+
+<h2>Check-In</h2>
+
+<form asp-action="SubmitCheckin" method="post">
+    <div class="form-group">
+        <label for="serviceType">Select Service:</label>
+        <select asp-for="ServiceType" class="form-control">
+            <option value="">Select a service</option>
+            @foreach (var service in Model.Services)
+            {
+                <option value="@service.Id">@service.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

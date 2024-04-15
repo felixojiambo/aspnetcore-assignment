@@ -28,30 +28,33 @@ namespace Queue_Management_System.Data
             }
         }
 
-        public List<Customer> GetCustomers()
+      public List<Customer> GetCustomers()
+{
+    var customers = new List<Customer>();
+    using (var connection = new NpgsqlConnection(_connectionString))
+    {
+        connection.Open();
+        using (var command = new NpgsqlCommand("SELECT * FROM customers", connection))
         {
-            var customers = new List<Customer>();
-            using (var connection = new NpgsqlConnection(_connectionString))
+            using (var reader = command.ExecuteReader())
             {
-                connection.Open();
-                using (var command = new NpgsqlCommand("SELECT * FROM customers", connection))
+                while (reader.Read())
                 {
-                    using (var reader = command.ExecuteReader())
+                    customers.Add(new Customer
                     {
-                        while (reader.Read())
-                        {
-                            customers.Add(new Customer
-                            {
-                                Id = reader.GetInt32(0),
-                                Name = reader.GetString(1),
-                                ServiceType = reader.GetString(2)
-                            });
-                        }
-                    }
+                        Id = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        ServiceTypeId = reader.GetInt32(2),
+                        // Leave ServiceType as null or populate it based on ServiceTypeId
+                        ServiceType = null // or fetch ServiceType based on ServiceTypeId
+                    });
                 }
             }
-            return customers;
         }
+    }
+    return customers;
+}
+
 
         public void UpdateCustomer(int id, string name, string serviceType)
         {

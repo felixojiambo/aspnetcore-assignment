@@ -1,4 +1,5 @@
 using Queue_Management_System.Data;
+using Queue_Management_System.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddScoped<TicketRepository>();
 builder.Services.AddScoped<ServicePointRepository>();
 builder.Services.AddScoped<ServiceProviderRepository>();
 builder.Services.AddScoped<CustomerRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,3 +33,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+

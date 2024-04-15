@@ -1,0 +1,29 @@
+@model Queue_Management_System.ViewModels.ServicePointViewModel
+
+<h2>@Model.SelectedServicePoint.Name</h2>
+
+<h3>Current Queue</h3>
+<ul>
+    @foreach (var ticket in Model.Tickets)
+    {
+        <li>
+            @ticket.CustomerName - @ticket.Status
+            <button formaction="@Url.Action("RecallNumber", new { ticketId = ticket.Id })" type="submit">Recall</button>
+            <button formaction="@Url.Action("MarkNoShow", new { ticketId = ticket.Id })" type="submit">No Show</button>
+            <button formaction="@Url.Action("MarkFinished", new { ticketId = ticket.Id })" type="submit">Finished</button>
+            <button formaction="@Url.Action("TransferNumber", new { ticketId = ticket.Id })" type="submit">Transfer</button>
+        </li>
+    }
+</ul>
+
+<h3>Select Your Service Point</h3>
+<form asp-action="SelectServicePoint">
+    <select name="servicePointId">
+        <option value="">-- Select Service Point --</option>
+        @foreach (var servicePoint in Model.ServicePoints)
+        {
+            <option value="@servicePoint.Id">@servicePoint.Name</option>
+        }
+    </select>
+    <button type="submit">Select</button>
+</form>
