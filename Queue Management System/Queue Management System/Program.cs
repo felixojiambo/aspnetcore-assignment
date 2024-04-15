@@ -1,8 +1,14 @@
+using Queue_Management_System.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+// Add services to the container.
+builder.Services.AddScoped<TicketRepository>();
+builder.Services.AddScoped<ServicePointRepository>();
+builder.Services.AddScoped<ServiceProviderRepository>();
+builder.Services.AddScoped<CustomerRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
