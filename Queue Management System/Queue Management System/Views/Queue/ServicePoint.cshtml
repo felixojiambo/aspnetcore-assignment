@@ -7,7 +7,7 @@
     @foreach (var ticket in Model.Tickets)
     {
         <li>
-            @ticket.CustomerName - @ticket.Status
+            @ticket.CustomerId - @ticket.Status
             <button formaction="@Url.Action("RecallNumber", new { ticketId = ticket.Id })" type="submit">Recall</button>
             <button formaction="@Url.Action("MarkNoShow", new { ticketId = ticket.Id })" type="submit">No Show</button>
             <button formaction="@Url.Action("MarkFinished", new { ticketId = ticket.Id })" type="submit">Finished</button>

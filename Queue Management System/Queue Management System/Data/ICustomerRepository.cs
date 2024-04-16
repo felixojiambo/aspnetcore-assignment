@@ -6,6 +6,7 @@ namespace Queue_Management_System.Data
     {
         void CreateCustomer(string name, string serviceType);
         List<Customer> GetCustomers();
+        
         void UpdateCustomer(int id, string name, string serviceType);
         void DeleteCustomer(int id);
     }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Data;
+using FastReport;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Queue_Management_System.Data;
 using Queue_Management_System.Models;
@@ -24,21 +26,55 @@ namespace Queue_Management_System.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult CheckinPage(int serviceTypeId, string customerName)
+[HttpPost]
+public IActionResult CheckinPage(int serviceTypeId, string customerName)
+{// Create a customer
+    CreateCustomer(customerName, serviceTypeId);
+
+    // Generate a ticket number
+    int ticketNumber = GenerateTicketNumber();
+
+    // Create a ticket for the customer
+    CreateTicket(serviceTypeId);
+    // Create a DataSet with the ticket data
+    DataSet dataSet = new DataSet();
+    DataTable dataTable = new DataTable("TicketData");
+    dataTable.Columns.Add("TicketNumber", typeof(int));
+    dataTable.Columns.Add("CustomerName", typeof(string));
+    dataTable.Columns.Add("ServiceType", typeof(int));
+    dataTable.Rows.Add(ticketNumber, customerName, serviceTypeId);
+    dataSet.Tables.Add(dataTable);
+
+    // Generate the ticket using FastReport.Net
+    var report = new Report();
+    report.Load("path/to/your/ticketTemplate.frx");
+    report.RegisterData(dataSet, "TicketData");
+    report.Prepare();
+
+    // Save the report to a file or stream
+    report.SavePrepared("path/to/save/ticket.frp");
+
+    // Redirect to the waiting page with the ticket ID
+  return RedirectToAction("WaitingPage", new { ticketId = ticketNumber });
+
+}
+
+        private void CreateTicket(int serviceTypeId)
         {
-            // Create a customer
-            var customer = new Customer { Name = customerName, ServiceTypeId = serviceTypeId };
-            _customerRepository.CreateCustomer(customerName, serviceTypeId.ToString()); // Assuming serviceTypeId is stored as a string in the database
-
-            // Create a ticket for the customer
-            var ticket = new Ticket { CustomerId = customer.Id, ServicePointId = 1, Status = "Waiting", CreatedAt = DateTime.Now, UpdatedAt = DateTime.Now }; // Example ServicePointId
-            _ticketRepository.CreateTicket(ticket);
-
-            // Redirect to the waiting page with the ticket ID
-            return RedirectToAction("WaitingPage", new { ticketId = ticket.Id });
+            throw new NotImplementedException();
         }
-       [Authorize, HttpGet]
+
+        private int GenerateTicketNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CreateCustomer(string customerName, int serviceTypeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Authorize, HttpGet]
 public IActionResult ServicePoint(int servicePointId)
 {
     // Retrieve the next ticket in the queue for the specified service point
@@ -150,6 +186,11 @@ public IActionResult TransferNumber(int ticketId, int newServicePointId)
     _ticketRepository.TransferNumber(ticketId, newServicePointId);
     return RedirectToAction("ServicePoint"); // Redirect to the ServicePoint view or another appropriate action
 }
+
+
+
+
+
 
     }
 

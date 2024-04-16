@@ -228,6 +228,19 @@ public void TransferNumber(int ticketId, int newServicePointId)
         }
     }
 }
+public int GetHighestTicketNumber()
+{
+    int highestTicketNumber = 0;
+    using (var connection = new NpgsqlConnection(_connectionString))
+    {
+        connection.Open();
+        using (var command = new NpgsqlCommand("SELECT MAX(ticket_number) FROM tickets", connection))
+        {
+            highestTicketNumber = (int)command.ExecuteScalar();
+        }
+    }
+    return highestTicketNumber;
+}
 
     }
     
