@@ -75,6 +75,31 @@ public IActionResult CheckinPage(int serviceTypeId, string customerName)
         {
             throw new NotImplementedException();
         }
+[HttpGet]
+public IActionResult WaitingPage(int ticketId)
+{
+    // Retrieve the ticket details using the ticket ID
+    var ticket = _ticketRepository.GetTicketById(ticketId);
+    if (ticket == null)
+    {
+        // Handle the case where the ticket does not exist
+        return NotFound("Ticket not found.");
+    }
+
+    // Determine the service point based on the ticket or service type
+    var servicePoint = _servicePointRepository.GetServicePointById(ticket.ServicePointId);
+    string servicePointName = servicePoint?.Name ?? "Unknown";
+
+    // Prepare the WaitingModel with the ticket number and service point
+    var model = new WaitingModel
+    {
+        TicketNumber = ticket.Id.ToString(), // Assuming the ID is the ticket number
+        ServicePoint = servicePointName
+    };
+
+    // Return the WaitingPage view with the model
+    return View(model);
+}
 
         [Authorize, HttpGet]
 public IActionResult ServicePoint(int servicePointId)

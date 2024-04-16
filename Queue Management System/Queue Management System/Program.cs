@@ -10,7 +10,7 @@ builder.Services.AddScoped<TicketRepository>();
 builder.Services.AddScoped<ServicePointRepository>();
 builder.Services.AddScoped<ServiceProviderRepository>();
 builder.Services.AddScoped<CustomerRepository>();
-
+builder.Services.AddScoped<UserRepository>(sp => new UserRepository(builder.Configuration.GetConnectionString("DefaultConnection")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
