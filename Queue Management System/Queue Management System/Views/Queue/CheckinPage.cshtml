@@ -5,9 +5,34 @@
 <form asp-action="SubmitCheckin" method="post">
     <div class="form-group">
         <label for="serviceType">Select Service:</label>
-        <select asp-for="SelectedServiceId" asp-items="@(new SelectList(Model.AvailableServices, "Id", "Name"))" class="form-control">
+        <select asp-for="SelectedServiceId" asp-items="@(new SelectList(Model.AvailableServices, "Id", "Name"))" class="form-control" id="serviceType">
             <option value="">Select a service</option>
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<style>
+    body {
+        font-size: 24px; /* Large text for better visibility */
+        background-color: #f0f0f0; /* Light background for kiosk mode */
+    }
+
+    .form-group {
+        width: 100%;
+        max-width: 600px; /* Adjust based on your needs */
+        margin: 0 auto;
+    }
+
+    .btn-primary {
+        font-size: 24px; /* Large button for easy selection */
+        padding: 10px 20px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('serviceType').focus();
+        document.getElementById('serviceType').requestFullscreen();
+    });
+</script>

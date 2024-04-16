@@ -26,9 +26,11 @@ namespace Queue_Management_System.Controllers
             return View();
         }
 
+
 [HttpPost]
 public IActionResult CheckinPage(int serviceTypeId, string customerName)
-{// Create a customer
+{
+    // Create a customer
     CreateCustomer(customerName, serviceTypeId);
 
     // Generate a ticket number
@@ -36,6 +38,7 @@ public IActionResult CheckinPage(int serviceTypeId, string customerName)
 
     // Create a ticket for the customer
     CreateTicket(serviceTypeId);
+
     // Create a DataSet with the ticket data
     DataSet dataSet = new DataSet();
     DataTable dataTable = new DataTable("TicketData");
@@ -55,8 +58,7 @@ public IActionResult CheckinPage(int serviceTypeId, string customerName)
     report.SavePrepared("path/to/save/ticket.frp");
 
     // Redirect to the waiting page with the ticket ID
-  return RedirectToAction("WaitingPage", new { ticketId = ticketNumber });
-
+    return RedirectToAction("WaitingPage", new { ticketId = ticketNumber });
 }
 
         private void CreateTicket(int serviceTypeId)
