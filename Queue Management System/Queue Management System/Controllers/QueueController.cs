@@ -169,6 +169,23 @@ public IActionResult ServicePoint(int servicePointId)
         //     {
         //         return View();
         //     }
+[Authorize, HttpGet]
+public IActionResult GetNextTicket(int servicePointId)
+{
+#pragma warning disable CS8605 // Unboxing a possibly null value.
+            int selectedServicePointId = (int)TempData["SelectedServicePointId"];
+#pragma warning restore CS8605 // Unboxing a possibly null value.
+            var nextTicket = _servicePointRepository.GetNextTicket(selectedServicePointId);
+
+    var viewModel = new ServicePointViewModel
+    {
+        SelectedServicePoint = _servicePointRepository.GetServicePointById(selectedServicePointId),
+        Tickets = _ticketRepository.GetTicketsByServicePointId(selectedServicePointId),
+        NextTicket = nextTicket
+    };
+
+    return View("ServicePoint", viewModel);
+}
 
         [Authorize, HttpGet]
 public IActionResult ServicePoint()

@@ -1,8 +1,4 @@
-using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System;
-using System.Collections.Generic;
-using Queue_Management_System.Models;
 using ServiceProvider = Queue_Management_System.Models.ServiceProvider;
 
 namespace Queue_Management_System.Data

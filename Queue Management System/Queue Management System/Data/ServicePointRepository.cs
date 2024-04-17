@@ -1,7 +1,4 @@
-using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System;
-using System.Collections.Generic;
 using Queue_Management_System.Models;
 
 namespace Queue_Management_System.Data
@@ -28,6 +25,34 @@ namespace Queue_Management_System.Data
                 }
             }
         }
+public Ticket GetNextTicket(int servicePointId)
+{
+    Ticket nextTicket = null;
+    using (var connection = new NpgsqlConnection(_connectionString))
+    {
+        connection.Open();
+        using (var command = new NpgsqlCommand("SELECT * FROM tickets WHERE service_point_id = @servicePointId AND status = 'pending' ORDER BY created_at ASC LIMIT 1", connection))
+        {
+            command.Parameters.AddWithValue("servicePointId", servicePointId);
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    nextTicket = new Ticket
+                    {
+                        Id = reader.GetInt32(0),
+                        CustomerId = reader.GetInt32(1),
+                        ServicePointId = reader.GetInt32(2),
+                        Status = reader.GetString(3),
+                        CreatedAt = reader.GetDateTime(4),
+                        UpdatedAt = reader.GetDateTime(5)
+                    };
+                }
+            }
+        }
+    }
+    return nextTicket;
+}
 
         public List<ServicePoint> GetServicePoints()
         {

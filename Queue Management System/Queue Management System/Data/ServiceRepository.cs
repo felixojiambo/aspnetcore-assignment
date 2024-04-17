@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using Npgsql;
 using Queue_Management_System.Models;
-using Queue_Management_System.Data;
 
 namespace Queue_Management_System.Data
 {

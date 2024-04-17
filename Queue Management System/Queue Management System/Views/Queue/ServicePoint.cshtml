@@ -16,6 +16,18 @@
     }
 </ul>
 
+<h3>Next Ticket</h3>
+@if (Model.NextTicket != null)
+{
+    <p>Customer ID: @Model.NextTicket.CustomerId</p>
+    <p>Status: @Model.NextTicket.Status</p>
+    <p>Created At: @Model.NextTicket.CreatedAt</p>
+}
+else
+{
+    <p>No tickets are currently pending.</p>
+}
+
 <h3>Select Your Service Point</h3>
 <form asp-action="SelectServicePoint">
     <select name="servicePointId">
